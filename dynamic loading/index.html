@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Dynamic Website using ajax</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        #body{
+            background-image: url(./bg.jpg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            overflow-x: hidden;
+            color:white;
+            height: 100%;
+        }
+        #content {
+            min-height: 600px;
+        }
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .spinner {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        #footer{
+            background: #000000;
+            margin-top: 150px;
+            padding-left: 10%;
+            padding-right: 15px
+
+      
+          }
+         
+    </style>
+</head>
+<body id="body">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">My Website</a>
+            <div class="navbar-nav">
+                <button class="nav-link btn btn-link" data-page="home">Home</button>
+                <button class="nav-link btn btn-link" data-page="about">About</button>
+                <button class="nav-link btn btn-link" data-page="contact">Contact</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <div id="content">
+            <!-- Content  -->
+        </div>
+    </div>
+    <div id="preloader" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        const contentDiv = $('#content');
+        const preloader = $('#preloader');
+    
+        function loadContent(page) {
+          
+            preloader.show();
+            
+            $.ajax({
+                url: page + '.html',
+                method: 'GET',
+                dataType: 'html',
+                success: function(data) {
+                   
+                    setTimeout(function() {
+                        contentDiv.html(data);
+                        preloader.hide();
+                    }, 1000);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error loading content:', error);
+                    contentDiv.html('<p class="text-danger">Error loading content. Please try again.</p>');
+                  
+                    preloader.hide();
+                }
+            });
+        }
+    
+        $('nav button').on('click', function() {
+            const page = $(this).data('page');
+            loadContent(page);
+        });
+    
+
+        loadContent('home');
+    });
+</script>
+
+
+
+<div id="footer"   >
+    <div class="row " >
+      <div class="col ms-2">
+        <h3>my company</h3>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem voluptatibus excepturi voluptate et consequatur
+         mollitia voluptas expedita qui reprehenderit, velit ad! Dolor reprehenderit cum commodi provident accusantium nostrum architecto quo.
+      </div>
+      <div class="col ms-2">
+      <h3>our services</h3>
+      <ul>
+        <li>research</li>
+        <li>development</li>
+        <li>digital marketing</li>
+        <li>network services</li>
+      </ul>
+
+      </div>
+      <div class="col ms-2">
+        <h3>get in touch</h3>
+        <ul>
+            <li>987654321</li>
+            <li>abc123@gmail.com</li>
+            <li>safa complex,thaliparamba,pin:671531</li>
+        </ul>
+      </div>
+      <div class="col ms-2">
+        <h3>company</h3>
+        <ul>
+            <li>home</li>
+            <li>about</li>
+            <li>contact</li>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+</body>
+</html>
